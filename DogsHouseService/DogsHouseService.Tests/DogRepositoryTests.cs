@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Shouldly;
 using System.Text;
 using Xunit;
+using Xunit.Sdk;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace DogsHouseService.Tests
@@ -21,7 +22,8 @@ namespace DogsHouseService.Tests
         }
 
         private static Dog CreateDog(string name = "Buddy", int tail = 10, int weight = 20)
-            => new Dog { Name = name, Color = "Brown", TailLength = tail, Weight = weight };
+            => new()
+            { Name = name, Color = "Brown", TailLength = tail, Weight = weight };
 
         [Fact]
         public async Task AddAsync_ShouldAddDog_WhenValid()
@@ -57,20 +59,6 @@ namespace DogsHouseService.Tests
         }
 
         [Fact]
-        public async Task AddAsync_ShouldThrow_WhenTailLengthIsNegative()
-        {
-            // Arrange
-            using var context = CreateContext();
-            var repo = new DogRepository(context);
-            var dog = CreateDog("Spike", -5);
-            var errorMessage = "Tail length cannot be negative";
-
-            // Act & Assert
-            var ex = await Should.ThrowAsync<ArgumentException>(() => repo.AddAsync(dog), "Must throw ArgumentException.");
-            ex.Message.ShouldContain(errorMessage, customMessage: $"The error message must contain \"{errorMessage}\"");
-        }
-
-        [Fact]
         public async Task GetAllAsync_ShouldReturnAllDogs()
         {
             // Arrange
@@ -79,9 +67,9 @@ namespace DogsHouseService.Tests
             var expectedCount = dogs.Length;
             context.Dogs.AddRange(dogs);
             await context.SaveChangesAsync();
+            var repo = new DogRepository(context);
 
             // Act
-            var repo = new DogRepository(context);
             var result = await repo.GetAllAsync();
 
             // Assert
@@ -99,14 +87,14 @@ namespace DogsHouseService.Tests
             context.Dogs.AddRange(dogs);
             await context.SaveChangesAsync();
 
-            StringBuilder customMessage = new StringBuilder("The repository must return two dogs with names:");
+            StringBuilder customMessage = new("The repository must return two dogs with names:");
             foreach (var name in expectedDogsNames)
             {
                 customMessage.Append($" \"{name}\"");
             }
+            var repo = new DogRepository(context);
 
             // Act
-            var repo = new DogRepository(context);
             var result = (await repo.GetAllAsync(pageNumber: pageNumber, pageSize: pageSize)).ToList();
 
             // Assert
@@ -149,9 +137,9 @@ namespace DogsHouseService.Tests
             var dog = CreateDog("Rex");
             context.Dogs.Add(dog);
             await context.SaveChangesAsync();
+            var repo = new DogRepository(context);
 
             // Act
-            var repo = new DogRepository(context);
             var result = await repo.GetByIdAsync("Rex");
 
             // Assert
@@ -200,9 +188,9 @@ namespace DogsHouseService.Tests
             var dog = CreateDog("Milo");
             context.Dogs.Add(dog);
             await context.SaveChangesAsync();
+            var repo = new DogRepository(context);
 
             // Act
-            var repo = new DogRepository(context);
             await repo.DeleteAsync("Milo");
 
             // Assert

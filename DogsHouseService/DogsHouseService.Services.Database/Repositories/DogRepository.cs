@@ -33,11 +33,6 @@ namespace DogsHouseService.Services.Database.Repositories
         {
             ArgumentNullException.ThrowIfNull(entity);
 
-            if (entity.TailLength < 0)
-            {
-                throw new ArgumentException("Tail length cannot be negative");
-            }
-
             return this.AddInternalAsync(entity);
         }
 
@@ -49,13 +44,7 @@ namespace DogsHouseService.Services.Database.Repositories
         /// <exception cref="KeyNotFoundException">Thrown when the dog with the specified id does not exist.</exception>
         public async Task DeleteAsync(object id)
         {
-            var exisiting = await this.dbSet.FindAsync(id);
-
-            if (exisiting == null)
-            {
-                throw new KeyNotFoundException("The dog with this id does not exist in the database");
-            }
-
+            var exisiting = await this.dbSet.FindAsync(id) ?? throw new KeyNotFoundException("The dog with this id does not exist in the database");
             this.dbSet.Remove(exisiting);
             await this.Context.SaveChangesAsync();
         }
@@ -112,11 +101,6 @@ namespace DogsHouseService.Services.Database.Repositories
         {
             ArgumentNullException.ThrowIfNull(entity);
 
-            if (entity.TailLength < 0)
-            {
-                throw new ArgumentException("Tail length cannot be negative");
-            }
-
             return UpdateInternalAsync(entity);
         }
 
@@ -142,12 +126,7 @@ namespace DogsHouseService.Services.Database.Repositories
 
         private async Task<Dog> UpdateInternalAsync(Dog entity)
         {
-            var existing = await this.dbSet.FindAsync(entity.Name);
-            if (existing == null)
-            {
-                throw new KeyNotFoundException("The dog with this name does not exist in the database");
-            }
-
+            var existing = await this.dbSet.FindAsync(entity.Name) ?? throw new KeyNotFoundException("The dog with this name does not exist in the database");
             this.Context.Entry(existing).CurrentValues.SetValues(entity);
             await this.Context.SaveChangesAsync();
             return existing;

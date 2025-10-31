@@ -7,13 +7,8 @@ using System.Threading.Tasks;
 
 namespace DogsHouseService.Services.Database.Repositories
 {
-    public abstract class AbstractRepository
+    public abstract class AbstractRepository(DogsHouseServiceDbContext context)
     {
-        protected AbstractRepository(DogsHouseServiceDbContext context) 
-        {
-            this.Context = context;
-        }
-
-        protected DogsHouseServiceDbContext Context { get; }
+        protected DogsHouseServiceDbContext Context { get; } = context;
     }
 }

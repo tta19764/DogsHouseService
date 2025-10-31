@@ -3,13 +3,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DogsHouseService.Services.Database.Data
 {
-    public class DogsHouseServiceDbContext : DbContext
+    public class DogsHouseServiceDbContext(DbContextOptions<DogsHouseServiceDbContext> options) : DbContext(options)
     {
-        public DogsHouseServiceDbContext(DbContextOptions<DogsHouseServiceDbContext> options)
-            : base(options)
-        {
-        }
-
         public DbSet<Dog> Dogs { get; set; }
     }
 }
