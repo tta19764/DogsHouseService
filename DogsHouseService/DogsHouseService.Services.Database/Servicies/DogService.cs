@@ -2,6 +2,7 @@
 using DogsHouseService.Services.Database.Helpers;
 using DogsHouseService.Services.Database.Interfaces;
 using DogsHouseService.Services.Database.Repositories;
+using DogsHouseService.Sevices.Enums;
 using DogsHouseService.Sevices.Interfaces.Services;
 using DogsHouseService.Sevices.Models;
 
@@ -107,6 +108,40 @@ namespace DogsHouseService.Services.Database.Servicies
             }
 
             return UpdateInternalAsync(model);
+        }
+
+        public async Task<IEnumerable<DogModel>> GetAllSortedAsync(SortBy attribute = SortBy.Name, string order = "asc", int? pageNumber = null, int? pageSize = null)
+        {
+            var dogs = await this.GetAllAsync();
+
+            dogs = attribute switch
+            {
+                SortBy.Name => order.Equals("desc"
+                                        , StringComparison.CurrentCultureIgnoreCase)
+                                        ? dogs.OrderByDescending(d => d.Name)
+                                        : dogs.OrderBy(d => d.Name),
+                SortBy.Color => order.Equals("desc"
+                                        , StringComparison.CurrentCultureIgnoreCase)
+                                        ? dogs.OrderByDescending(d => d.Color)
+                                        : dogs.OrderBy(d => d.Color),
+                SortBy.TailLength => order.Equals("desc"
+                                        , StringComparison.CurrentCultureIgnoreCase)
+                                        ? dogs.OrderByDescending(d => d.TailLength)
+                                        : dogs.OrderBy(d => d.TailLength),
+                SortBy.Weight => order.Equals("desc"
+                                        , StringComparison.CurrentCultureIgnoreCase)
+                                        ? dogs.OrderByDescending(d => d.Weight)
+                                        : dogs.OrderBy(d => d.Weight),
+                _ => throw new ArgumentOutOfRangeException(nameof(attribute), "Invalid sort attribute."),
+            };
+            if (pageNumber != null && pageSize != null)
+            {
+                int page = pageNumber > 0 ? pageNumber.Value : 1;
+                int row = pageSize > 0 ? pageSize.Value : 1;
+                dogs = dogs.Skip((page - 1) * row).Take(row);
+            }
+
+            return dogs;
         }
 
         private async Task<DogModel> AddInternalAsync(DogModel model)

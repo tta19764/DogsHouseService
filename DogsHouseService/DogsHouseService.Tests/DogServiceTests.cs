@@ -2,6 +2,7 @@
 using DogsHouseService.Services.Database.Interfaces;
 using DogsHouseService.Services.Database.Repositories;
 using DogsHouseService.Services.Database.Servicies;
+using DogsHouseService.Sevices.Enums;
 using DogsHouseService.Sevices.Models;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using Moq;
@@ -265,5 +266,153 @@ namespace DogsHouseService.Tests
             var ex = await Should.ThrowAsync<KeyNotFoundException>(() => service.DeleteAsync("X"), "The service must throw KeyNotFoundException.");
             ex.Message.ShouldContain(errorMessage, customMessage: $"The error message must contain: \"{errorMessage}\"");
         }
+
+        [Fact]
+        public async Task GetAllSortedAsync_ShouldSortByNameAscending()
+        {
+            // Arrange
+            var repoMock = new Mock<IDogRepository>();
+            var dogs = new[]
+            {
+                CreateEntity("Charlie"),
+                CreateEntity("Buddy"),
+                CreateEntity("Ace")
+            };
+
+            repoMock.Setup(r => r.GetAllAsync())
+                .ReturnsAsync(dogs);
+
+            var service = new DogService(repoMock.Object);
+
+            // Act
+            var result = (await service.GetAllSortedAsync(SortBy.Name, "asc")).ToList();
+
+            // Assert
+            result.Select(d => d.Name).ShouldBe(["Ace", "Buddy", "Charlie"],
+                "Dogs must be sorted by Name ascending.");
+        }
+
+        [Fact]
+        public async Task GetAllSortedAsync_ShouldSortByNameDescending()
+        {
+            // Arrange
+            var repoMock = new Mock<IDogRepository>();
+            var dogs = new[]
+            {
+                CreateEntity("Charlie"),
+                CreateEntity("Buddy"),
+                CreateEntity("Ace")
+            };
+
+            repoMock.Setup(r => r.GetAllAsync())
+                .ReturnsAsync(dogs);
+
+            var service = new DogService(repoMock.Object);
+
+            // Act
+            var result = (await service.GetAllSortedAsync(SortBy.Name, "desc")).ToList();
+
+            // Assert
+            result.Select(d => d.Name).ShouldBe(["Charlie", "Buddy", "Ace"],
+                "Dogs must be sorted by Name descending.");
+        }
+
+        [Fact]
+        public async Task GetAllSortedAsync_ShouldSortByWeightAscending()
+        {
+            // Arrange
+            var repoMock = new Mock<IDogRepository>();
+            var dogs = new[]
+            {
+                CreateEntity("A", 10, 50),
+                CreateEntity("B", 10, 10),
+                CreateEntity("C", 10, 30)
+            };
+
+            repoMock.Setup(r => r.GetAllAsync())
+                .ReturnsAsync(dogs);
+
+            var service = new DogService(repoMock.Object);
+
+            // Act
+            var result = (await service.GetAllSortedAsync(SortBy.Weight, "asc")).ToList();
+
+            // Assert
+            result.Select(d => d.Weight).ShouldBe([10, 30, 50],
+                "Dogs must be sorted by Weight ascending.");
+        }
+
+        [Fact]
+        public async Task GetAllSortedAsync_ShouldSortByTailLengthDescending()
+        {
+            // Arrange
+            var repoMock = new Mock<IDogRepository>();
+            var dogs = new[]
+            {
+                CreateEntity("A", 5, 10),
+                CreateEntity("B", 20, 10),
+                CreateEntity("C", 10, 10)
+            };
+
+            repoMock.Setup(r => r.GetAllAsync())
+                .ReturnsAsync(dogs);
+
+            var service = new DogService(repoMock.Object);
+
+            // Act
+            var result = (await service.GetAllSortedAsync(SortBy.TailLength, "desc")).ToList();
+
+            // Assert
+            result.Select(d => d.TailLength).ShouldBe([20, 10, 5],
+                "Dogs must be sorted by TailLength descending.");
+        }
+
+        [Fact]
+        public async Task GetAllSortedAsync_ShouldApplyPagination()
+        {
+            // Arrange
+            var repoMock = new Mock<IDogRepository>();
+            var dogs = new[]
+            {
+                CreateEntity("A"),
+                CreateEntity("B"),
+                CreateEntity("C"),
+                CreateEntity("D"),
+                CreateEntity("E")
+            };
+
+            repoMock.Setup(r => r.GetAllAsync())
+                .ReturnsAsync(dogs);
+
+            var service = new DogService(repoMock.Object);
+            int pageNumber = 2, pageSize = 2;
+
+            // Act
+            var result = (await service.GetAllSortedAsync(SortBy.Name, "asc", pageNumber, pageSize)).ToList();
+
+            // Assert
+            result.Select(d => d.Name).ShouldBe(["C", "D"],
+                "Page 2 with page size 2 should return the 3rd and 4th dogs alphabetically.");
+        }
+
+        [Fact]
+        public async Task GetAllSortedAsync_ShouldThrow_WhenInvalidAttributeProvided()
+        {
+            // Arrange
+            var repoMock = new Mock<IDogRepository>();
+            repoMock.Setup(r => r.GetAllAsync())
+                .ReturnsAsync([CreateEntity("X")]);
+
+            var service = new DogService(repoMock.Object);
+            var invalidAttribute = (SortBy)999;
+
+            // Act & Assert
+            var ex = await Should.ThrowAsync<ArgumentOutOfRangeException>(
+                () => service.GetAllSortedAsync(invalidAttribute),
+                "The method must throw ArgumentOutOfRangeException for invalid sort attribute.");
+
+            ex.ParamName.ShouldBe("attribute", "The exception must refer to the 'attribute' parameter.");
+        }
+
     }
 }
