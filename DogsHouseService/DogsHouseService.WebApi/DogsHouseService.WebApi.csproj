@@ -21,4 +21,8 @@
     <ProjectReference Include="..\DogsHouseService.WebApi.Models\DogsHouseService.WebApi.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

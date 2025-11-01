@@ -35,40 +35,42 @@ Custom Exception Handling Middleware
 Dependency Injection / Repository-Service Pattern
 
 ⚙️ Project Structure
+```
 DogsHouseService/
-├── DogsHouseService.WebApi/   # ASP.NET Core Web API project (entry point)
-│   ├── Controllers/           # API controllers (Ping, Dogs)
-│   ├── Middlewares/           # Custom exception and rate-limiting middleware
-│   ├── Extensions/            # Service and middleware registration extensions
-│   ├── appsettings.json       # Application and database configuration
-│   ├── Helpers/               # Mapping helpers (Model ↔ DTO)
-│   ├── Logging/               # Logging delegates
-│   ├── Migrations/            # Database migrations
-│   ├── Options/               # Classes for configuration setting extraction
-│   └── Program.cs             # Application startup entry
+├── DogsHouseService.WebApi/              # ASP.NET Core Web API project (entry point)
+│   ├── Controllers/                      # API controllers (Ping, Dogs)
+│   ├── Middlewares/                      # Custom exception and rate-limiting middleware
+│   ├── Extensions/                       # Service and middleware registration extensions
+│   ├── appsettings.json                  # Application and database configuration
+│   ├── Helpers/                          # Mapping helpers (Model ↔ DTO)
+│   ├── Logging/                          # Logging delegates
+│   ├── Migrations/                       # Database migrations
+│   ├── Options/                          # Classes for configuration setting extraction
+│   └── Program.cs                        # Application startup entry
 │
 ├── DogsHouseService.WebApi.Models/
-│   └── Dtos/                  # Request and response DTOs
+│   └── Dtos/                             # Request and response DTOs
 │
-├── DogsHouseService.Services/ # Business logic layer
-│   ├── Interfaces/            # Service interfaces
-│   ├── Enums/                 # Service enums
-│   └── Models/                # Business logic layer models
+├── DogsHouseService.Services/            # Business logic layer
+│   ├── Interfaces/                       # Service interfaces
+│   ├── Enums/                            # Service enums
+│   └── Models/                           # Business logic layer models
 │
-├── DogsHouseService.Services.Database/ # Data access layer (EF Core)
-│   ├── Data/                  # DbContext (DogsHouseServiceDbContext)
-│   ├── Entities/              # EF Core entities (Dog)
-│   ├── Interfaces/            # Repository interfaces
-│   ├── Helpers/               # Mapping helpers (Model ↔ Entity)
-│   ├── Services/              # Service implementations
-│   └── Repositories/          # Repository implementations (e.g. DogRepository)
+├── DogsHouseService.Services.Database/   # Data access layer (EF Core)
+│   ├── Data/                             # DbContext (DogsHouseServiceDbContext)
+│   ├── Entities/                         # EF Core entities (Dog)
+│   ├── Interfaces/                       # Repository interfaces
+│   ├── Helpers/                          # Mapping helpers (Model ↔ Entity)
+│   ├── Services/                         # Service implementations
+│   └── Repositories/                     # Repository implementations (e.g. DogRepository)
 │
-└── DogsHouseService.Tests/    # Unit test project (xUnit + Moq)
-    ├── DogsControllerTests    # DogsController tests
-    ├── DogServiceTests        # DogService tests
-    ├── DogRepositoryTests     # DogRepository tests
-    ├── PingControllerTests    # OingController tests
-    └── MiddlewareTests        # Middleware tests
+└── DogsHouseService.Tests/               # Unit test project (xUnit + Moq)
+    ├── DogsControllerTests               # DogsController tests
+    ├── DogServiceTests                   # DogService tests
+    ├── DogRepositoryTests                # DogRepository tests
+    ├── PingControllerTests               # PingController tests
+    └── MiddlewareTests                   # Middleware tests
+```
 
 
 🗄️ Database Configuration
