@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DogsHouseService.WebApi.Migrations
 {
     [DbContext(typeof(DogsHouseServiceDbContext))]
-    [Migration("20251031232851_initial")]
-    partial class initial
+    [Migration("20251101104722_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
