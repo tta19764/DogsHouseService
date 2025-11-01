@@ -9,4 +9,4 @@ var app = builder.Build();
 app.UseDogsHouseServiceMiddleware();
 app.MapDogsHouseServiceRoutes();
 
-_ = app.RunAsync();
+await app.RunAsync();

@@ -8,8 +8,16 @@ using System.Threading.Tasks;
 
 namespace DogsHouseService.Services.Database.Helpers
 {
+    /// <summary>
+    /// Converters between models and entities
+    /// </summary>
     public static class Converters
     {
+        /// <summary>
+        /// Converts DogModel to Dog entity
+        /// </summary>
+        /// <param name="model">The dog model.</param>
+        /// <returns>The dog entity.</returns>
         public static Dog DogModelToEntity(DogModel model)
         {
             ArgumentNullException.ThrowIfNull(model);
@@ -23,6 +31,11 @@ namespace DogsHouseService.Services.Database.Helpers
             };
         }
 
+        /// <summary>
+        /// Converts Dog entity to DogModel
+        /// </summary>
+        /// <param name="entity">The dog entity.</param>"
+        /// <returns>The dog model.</returns>
         public static DogModel DogEntityToModel(Dog entity)
         {
             ArgumentNullException.ThrowIfNull(entity);

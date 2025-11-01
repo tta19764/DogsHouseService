@@ -1,6 +1,3 @@
 @DogsHouseService.WebApi_HostAddress = http://localhost:5192
 
-GET {{DogsHouseService.WebApi_HostAddress}}/weatherforecast/
-Accept: application/json
-
 ###
