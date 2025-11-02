@@ -1,5 +1,4 @@
-🐶 DogsHouseService
-Overview
+DogsHouseService Overview
 
 DogsHouseService is a sample REST API built with ASP.NET Core Web API and Entity Framework Core (Code-First) for managing a simple dog database.
 It was developed as part of a Junior .NET Developer test task for Codebridge Technology.
@@ -14,7 +13,7 @@ Add new dogs to the database.
 
 Handle rate limiting and error handling globally.
 
-🧩 Technologies Used
+Technologies Used
 
 .NET 8 / ASP.NET Core Web API
 
@@ -34,7 +33,7 @@ Custom Exception Handling Middleware
 
 Dependency Injection / Repository-Service Pattern
 
-⚙️ Project Structure
+Project Structure
 ```
 DogsHouseService/
 ├── DogsHouseService.WebApi/              # ASP.NET Core Web API project (entry point)
@@ -73,7 +72,7 @@ DogsHouseService/
 ```
 
 
-🗄️ Database Configuration
+Database Configuration
 
 The project uses EF Core Code First with migrations.
 
@@ -87,7 +86,7 @@ Running Migrations
 dotnet ef migrations add Initial
 dotnet ef database update Initial
 
-🚀 Running the Application
+Running the Application
 1. Clone and open the project
 git clone https://github.com/<your-username>/DogsHouseService.git
 cd DogsHouseService
@@ -97,15 +96,15 @@ dotnet run --project DogsHouseService.WebApi
 
 
 The API will be available at:
-👉 https://localhost:7089 or http://localhost:5192
+https://localhost:7089 or http://localhost:5192
 
 3. Open Swagger UI
 
 Visit
-👉 https://localhost:7089/swagger
+https://localhost:7089/swagger
 
-📡 API Endpoints
-🧠 Health Check
+API Endpoints
+Health Check
 
 GET /ping
 Returns the application name and version.
@@ -118,7 +117,7 @@ Response
 
 Dogshouseservice.Version1.0.1
 
-🐕 Get All Dogs
+Get All Dogs
 
 GET /dogs
 
@@ -155,7 +154,7 @@ Response
   }
 ]
 
-🐾 Create a Dog
+Create a Dog
 
 POST /dog
 
@@ -173,7 +172,7 @@ TailLength and Weight must be positive integers.
 
 Invalid JSON or missing fields return 400 Bad Request.
 
-⏱️ Rate Limiting
+Rate Limiting
 
 To prevent overloading the service, requests are limited based on configuration in appsettings.json:
 
@@ -189,7 +188,7 @@ If exceeded, the server responds with:
 HTTP 429 Too Many Requests
 Too many requests. Please try again later.
 
-🧰 Exception Handling
+Exception Handling
 
 All unhandled exceptions are processed by ExceptionHandlingMiddleware, which:
 
@@ -202,7 +201,7 @@ Returns a structured JSON response:
   "statusCode": 400
 }
 
-🧪 Unit Tests
+Unit Tests
 
 The project includes comprehensive xUnit tests covering:
 
@@ -218,7 +217,7 @@ Run tests using:
 
 dotnet test
 
-📖 Configuration
+Configuration
 
 All settings are stored in appsettings.json:
 
@@ -232,7 +231,7 @@ All settings are stored in appsettings.json:
   "QueueLimit": 0
 }
 
-🧠 Design Patterns Used
+Design Patterns Used
 
 Repository Pattern – data access abstraction
 
